@@ -3,6 +3,7 @@
 #include "constants.h"
 #include "loopFunc.h"
 
+
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 int game_is_running = False;
