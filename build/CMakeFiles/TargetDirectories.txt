@@ -1,0 +1,3 @@
+/home/zhero/projects/pikumaTutorial/build/CMakeFiles/PingPong.dir
+/home/zhero/projects/pikumaTutorial/build/CMakeFiles/edit_cache.dir
+/home/zhero/projects/pikumaTutorial/build/CMakeFiles/rebuild_cache.dir

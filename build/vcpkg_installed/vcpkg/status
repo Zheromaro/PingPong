@@ -1,0 +1,206 @@
+Package: vcpkg-cmake-config
+Version: 2024-05-23
+Architecture: x64-linux
+Multi-Arch: same
+Abi: b3e6227a9c46d5cefacb0e63db4ce64c7509717f60edb2a6480b5feb7d594ac0
+Status: install ok installed
+
+Package: vcpkg-cmake
+Version: 2024-04-23
+Architecture: x64-linux
+Multi-Arch: same
+Abi: c11d8aa1071fb205926030998cf9c1d023b6719ff8a0fa6d9bcf62a1a9ec2a10
+Status: install ok installed
+
+Package: zstd
+Version: 1.5.7
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: a4e180036a5702a4d0731add61edf87fcdb74e45c9417b2b4a38465105042dfa
+Description: Zstandard - Fast real-time compression algorithm
+Status: install ok installed
+
+Package: vcpkg-cmake-get-vars
+Version: 2024-09-22
+Depends: vcpkg-cmake
+Architecture: x64-linux
+Multi-Arch: same
+Abi: b107f2c37b35334292fe91f47ee518fc4801c2715888be87c8065ed6078d553c
+Status: install ok installed
+
+Package: vcpkg-tool-meson
+Version: 1.7.2
+Depends: vcpkg-cmake-get-vars
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 83b88e32fd5836ffee120ef4d9779ca2b1e5d345db948c778e033415028bffad
+Description: Meson build system
+Status: install ok installed
+
+Package: lz4
+Version: 1.10.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: f8a376665f8e639b5e96e418770a06c2c25c9320c1dac1a81f4db67618b9445b
+Description: Lossless compression algorithm, providing compression speed at 400 MB/s per core.
+Status: install ok installed
+
+Package: vcpkg-make
+Version: 2025-04-25
+Depends: vcpkg-cmake-get-vars
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 586e6614678ed2a7229a31623092239b9807046351f75448de56cf2829962a69
+Status: install ok installed
+
+Package: libxcrypt
+Version: 4.4.38
+Depends: vcpkg-make
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 8a94c1c30e2a1f86b2c33838c93be20ee232bba93f3c4a437b59817cb8048a34
+Description: libxcrypt is a modern library for one-way hashing of passwords. On Linux-based systems, by default libxcrypt will be binary backward compatible with the libcrypt.so.1 shipped as part of the GNU C Library.
+Status: install ok installed
+
+Package: libmount
+Version: 2.40
+Architecture: x64-linux
+Multi-Arch: same
+Abi: d8f058b353a965609e5d03a1f0a9446977f81424f70de149e39b59c030e5e082
+Description: Block device identification library from util-linux
+Status: install ok installed
+
+Package: liblzma
+Version: 5.8.1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 6874ed48d058938dcc77bc59d0d2097ff503d4c3334f1c5a71dd5c66f9e1a1bd
+Description: Compression library with an API similar to that of zlib.
+Status: install ok installed
+
+Package: libcap
+Version: 2.73
+Depends: vcpkg-cmake-get-vars
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 8b800c97113a16615ae94fa4050f15279288517a586a6255f272c0c60e914782
+Description: A library for getting and setting POSIX.1e (formerly POSIX 6) draft 15 capabilities.
+Status: install ok installed
+
+Package: gperf
+Version: 3.1
+Port-Version: 7
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 497157fe0547ff16a301171f377f19860d77ca427d4d0c2aee2532439cc013c1
+Description: GNU perfect hash function generator
+Status: install ok installed
+
+Package: libsystemd
+Version: 256.4
+Depends: gperf, libcap, liblzma, libmount, libxcrypt, lz4, vcpkg-tool-meson, zstd
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 009d08a136dc25976d55c30caf4c5f8c0c724d0f92f31d7386e23ed380f83637
+Description: Libsystemd
+Status: install ok installed
+
+Package: expat
+Version: 2.7.1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 2096bdf4e0e0411fbce1a020bbe7c0e01041c8de8cb51ac18bc8002ea8035dac
+Description: XML parser library written in C
+Status: install ok installed
+
+Package: dbus
+Version: 1.16.2
+Port-Version: 1
+Depends: expat, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: bdcb721de029e4023f3c58952f28683b97d97f5e2ace3ac3d15a3a9e74b1a719
+Description: D-Bus specification and reference implementation, including libdbus and dbus-daemon
+Default-Features: systemd
+Status: install ok installed
+
+Package: dbus
+Feature: systemd
+Depends: libsystemd
+Architecture: x64-linux
+Multi-Arch: same
+Description: Build with systemd at_console support
+Status: install ok installed
+
+Package: sdl2
+Version: 2.32.6
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 3105d3c5e1315858482786453e3c3fad82bd1e3c64203128829ef52cc671fb72
+Description: Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D.
+Default-Features: dbus, ibus, wayland, x11
+Status: install ok installed
+
+Package: sdl2
+Feature: dbus
+Depends: dbus
+Architecture: x64-linux
+Multi-Arch: same
+Description: Build with D-Bus support
+Status: install ok installed
+
+Package: sdl2
+Feature: ibus
+Architecture: x64-linux
+Multi-Arch: same
+Description: Build with ibus IME support
+Status: install ok installed
+
+Package: sdl2
+Feature: wayland
+Architecture: x64-linux
+Multi-Arch: same
+Description: Build with Wayland support
+Status: install ok installed
+
+Package: sdl2
+Feature: x11
+Architecture: x64-linux
+Multi-Arch: same
+Description: Build with X11 support
+Status: install ok installed
+
+Package: zlib
+Version: 1.3.1
+Depends: vcpkg-cmake
+Architecture: x64-linux
+Multi-Arch: same
+Abi: dec1d61427db8e92d40350611f46a6e679d78258bbc981b757094c4a9e7d683d
+Description: A compression library
+Status: install ok installed
+
+Package: libpng
+Version: 1.6.47
+Depends: vcpkg-cmake, vcpkg-cmake-config, zlib
+Architecture: x64-linux
+Multi-Arch: same
+Abi: 11de416879bdf7e03da0ab2c42fea7fe18bf6b83665b64c451c3c6c8fcc5e5f5
+Description: libpng is a library implementing an interface for reading and writing PNG (Portable Network Graphics) format files
+Status: install ok installed
+
+Package: sdl2-image
+Version: 2.8.8
+Port-Version: 1
+Depends: libpng, sdl2, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-linux
+Multi-Arch: same
+Abi: c84bb2fd0cdba8cad8c927e0188f4d473bfc260b4144124e29a88d79503fd264
+Description: SDL_image is an image file loading library. It loads images as SDL surfaces and textures, and supports the following formats: BMP, GIF, JPEG, LBM, PCX, PNG, PNM, TGA, TIFF, WEBP, XCF, XPM, XV
+Status: install ok installed
+

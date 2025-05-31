@@ -1,0 +1,37 @@
+Detecting compiler hash for triplet x64-linux...
+Compiler found: /usr/bin/c++
+The following packages are already installed:
+  * dbus[core,systemd]:x64-linux@1.16.2#1 -- git+https://github.com/microsoft/vcpkg@53859bc14ee6f5ac022edc297a6569bc880abdec
+  * expat:x64-linux@2.7.1 -- git+https://github.com/microsoft/vcpkg@37702e8740157c39e52d0d254487c1811b7e1d7c
+  * gperf:x64-linux@3.1#7 -- git+https://github.com/microsoft/vcpkg@ce0c8faaa002c19f8d96a64d4929439cab4570f2
+  * libcap:x64-linux@2.73 -- git+https://github.com/microsoft/vcpkg@958892a0b06a8065844bcf29104e85f46b0cd743
+  * liblzma:x64-linux@5.8.1 -- git+https://github.com/microsoft/vcpkg@55eb3803f1d0388aebca8fd293963721bbf0092c
+  * libmount:x64-linux@2.40 -- git+https://github.com/microsoft/vcpkg@e78ea57cae347c42d9b7cdc4d65c521f229e0ed4
+  * libpng:x64-linux@1.6.47 -- git+https://github.com/microsoft/vcpkg@2e16dddb1925ae47b5f1ea95d16d6d78f2a711b8
+  * libsystemd:x64-linux@256.4 -- git+https://github.com/microsoft/vcpkg@03b20e5c1a908db5d38dd3fad3fa074c10e6b04b
+  * libxcrypt:x64-linux@4.4.38 -- git+https://github.com/microsoft/vcpkg@823052bfe81904cdf887fc83bbbf57eec872d057
+  * lz4:x64-linux@1.10.0 -- git+https://github.com/microsoft/vcpkg@4f01eec10f515a428e914107c5188366380f8dd9
+    sdl2[core,dbus,ibus,wayland,x11]:x64-linux@2.32.6 -- git+https://github.com/microsoft/vcpkg@02245464dc9b2b91921c4a11c0609b80faf3b68d
+    sdl2-image:x64-linux@2.8.8#1 -- git+https://github.com/microsoft/vcpkg@5cc9de78d44947f2029569202beba4b5af8ea2cc
+  * vcpkg-cmake:x64-linux@2024-04-23 -- git+https://github.com/microsoft/vcpkg@e74aa1e8f93278a8e71372f1fa08c3df420eb840
+  * vcpkg-cmake-config:x64-linux@2024-05-23 -- git+https://github.com/microsoft/vcpkg@97a63e4bc1a17422ffe4eff71da53b4b561a7841
+  * vcpkg-cmake-get-vars:x64-linux@2024-09-22 -- git+https://github.com/microsoft/vcpkg@f23148add155147f3d95ae622d3b0031beb25acf
+  * vcpkg-make:x64-linux@2025-04-25 -- git+https://github.com/microsoft/vcpkg@04845a7307c8b44a551bebca82a584470dcd5f1c
+  * vcpkg-tool-meson:x64-linux@1.7.2 -- git+https://github.com/microsoft/vcpkg@f0eaf59cb8c65aaf2fa2c1ea4a5ab75a5c04d727
+  * zlib:x64-linux@1.3.1 -- git+https://github.com/microsoft/vcpkg@3f05e04b9aededb96786a911a16193cdb711f0c9
+  * zstd:x64-linux@1.5.7 -- git+https://github.com/microsoft/vcpkg@31b7320fab13790c6861cb3c2d50dc8f60ca3602
+sdl2 provides CMake targets:
+
+    find_package(SDL2 CONFIG REQUIRED)
+    target_link_libraries(main
+        PRIVATE
+        $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+        $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+    )
+
+sdl2-image provides CMake targets:
+
+    find_package(SDL2_image CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
+
+All requested installations completed successfully in: 180 us
