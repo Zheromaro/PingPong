@@ -1,1 +1,0 @@
-/usr/bin/cc -g CMakeFiles/PingPong.dir/src/main.c.o -o PingPong  vcpkg_installed/x64-linux/debug/lib/libSDL2d.a vcpkg_installed/x64-linux/debug/lib/libSDL2_imaged.a -pthread vcpkg_installed/x64-linux/debug/lib/libpng16d.a -lm vcpkg_installed/x64-linux/debug/lib/libz.a 

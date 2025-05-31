@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/zhero/projects/pikumaTutorial/build",
-  "command": "/usr/bin/cc  -I/home/zhero/projects/pikumaTutorial/include -isystem /home/zhero/projects/pikumaTutorial/build/vcpkg_installed/x64-linux/include -isystem /home/zhero/projects/pikumaTutorial/build/vcpkg_installed/x64-linux/include/SDL2 -g -o CMakeFiles/PingPong.dir/src/main.c.o -c /home/zhero/projects/pikumaTutorial/src/main.c",
-  "file": "/home/zhero/projects/pikumaTutorial/src/main.c",
-  "output": "CMakeFiles/PingPong.dir/src/main.c.o"
-}
-]
