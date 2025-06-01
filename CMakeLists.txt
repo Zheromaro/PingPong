@@ -8,6 +8,7 @@ find_package(SDL2_image CONFIG REQUIRED)
 # variables
 set(SOURCES
     src/main.c
+    src/loopFunc.c
 )
 
 # executable

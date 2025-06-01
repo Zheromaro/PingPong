@@ -4,6 +4,7 @@
 #include "loopFunc.h"
 
 
+
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 int game_is_running = False;
@@ -22,7 +23,7 @@ int initialize_window(void){
         SDL_WINDOWPOS_CENTERED,
         WINDOW_HEIGHT,
         WINDOW_WIDTH,
-        SDL_WINDOW_BORDERLESS
+        SDL_WINDOW_OPENGL
     );
     if (!window){
         fprintf(stderr, "Error creating SDL Window. \n");
@@ -83,6 +84,8 @@ void Do_render(){
     
     // here we start drawing our game 
     render(renderer);
+
+    SDL_RenderPresent(renderer);
 }
 
 
