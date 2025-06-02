@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(PingPong VERSION 1.0)
 
-# packages
+# add packages, assets
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_image CONFIG REQUIRED)
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets" DESTINATION "${CMAKE_BINARY_DIR}")
 
 # variables
 set(SOURCES

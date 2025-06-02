@@ -2,8 +2,6 @@
 #include "loopFunc.h"
 #include "constants.h"
 
-SDL_Texture* LoadTexture(SDL_Renderer *renderer, const char *file);
-
 struct ball
 {
     float x;
@@ -11,6 +9,7 @@ struct ball
     float width;
     float height;
 } ball;
+
 struct dir
 {
     float x;
@@ -18,19 +17,12 @@ struct dir
 }dir;
 
 int followMouse = 0;
-SDL_Texture* texture = NULL;
-SDL_Rect windowRect = {
-    0, 
-    0, 
-    WINDOW_WIDTH,
-    WINDOW_HEIGHT
-};
 
 void setup() {
-    ball.width = 50;
-    ball.height = 50;
-    ball.x = WINDOW_WIDTH/2 - ball.width/2;
-    ball.y = WINDOW_HEIGHT/2 - ball.height/2;
+    ball.width = 15;
+    ball.height = 15;
+    ball.x = WINDOW_HEIGHT/2 - ball.height/2;
+    ball.y = WINDOW_WIDTH/2 - ball.width/2;
 
     dir.x = 0;
     dir.y = 0;
@@ -109,35 +101,14 @@ void update(float delta_time) {
     ball.y += dir.y;
 }
 void render(SDL_Renderer *renderer) {
-    SDL_Rect textureRect = {
+    SDL_Rect ball_rect = {
         ball.x, 
         ball.y, 
         ball.width, 
         ball.height
     };
 
-    if(texture == NULL)
-        texture = LoadTexture(renderer,"./assets/smart.png");
-    
-    SDL_RenderCopy(renderer, texture, &windowRect, &textureRect);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderFillRect(renderer, &ball_rect);
 
-}
-
-// DON'T do it in update
-SDL_Texture* LoadTexture(SDL_Renderer *renderer, const char *file){
-    SDL_Texture* newTexture = NULL;
-
-    SDL_Surface* loadedSurface = IMG_Load(file);
-    if(loadedSurface == NULL){
-        printf("Unable to load the image %s! SDL_image Error: %s\n", file, SDL_GetError());
-    } else {
-        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-
-        if(newTexture == NULL)
-            printf("Unable to texture from %s! SDL_image Error: %s\n", file, SDL_GetError());
-
-        SDL_FreeSurface(loadedSurface);
-    }
-
-    return newTexture;
 }

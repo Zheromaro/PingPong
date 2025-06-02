@@ -1,9 +1,7 @@
-#include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "constants.h"
 #include "loopFunc.h"
-
-
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
@@ -21,9 +19,9 @@ int initialize_window(void){
         NULL,  
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        WINDOW_HEIGHT,
         WINDOW_WIDTH,
-        SDL_WINDOW_OPENGL
+        WINDOW_HEIGHT,
+        SDL_WINDOW_RESIZABLE
     );
     if (!window){
         fprintf(stderr, "Error creating SDL Window. \n");
@@ -37,6 +35,11 @@ int initialize_window(void){
         return False;
     }
     
+    int imgFlags = IMG_INIT_PNG;
+    if(!(IMG_Init(imgFlags) & imgFlags)){
+        printf("SDL_image could not be initialized! SDL_image Error: %s\n", IMG_GetError());
+        return False;
+    }
 
     return True;
 }
