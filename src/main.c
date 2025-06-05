@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "constants.h"
-#include "loopFunc.h"
+#include "mainLayer.h"
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;

@@ -1,6 +1,7 @@
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "loopFunc.h"
 #include "constants.h"
+#include "mainLayer.h"
 
 SDL_Texture* LoadTexture(SDL_Renderer *renderer, const char *file);
 
@@ -22,8 +23,8 @@ SDL_Texture* texture = NULL;
 SDL_Rect windowRect = {
     0, 
     0, 
-    WINDOW_WIDTH,
-    WINDOW_HEIGHT
+    WINDOW_WIDTH * 2,
+    WINDOW_HEIGHT * 2
 };
 
 void setup() {
@@ -42,19 +43,19 @@ void process_input(SDL_Event event) {
     case SDL_KEYDOWN:
         switch (event.key.keysym.sym)
         {
-        case SDLK_w:
+        case SDLK_KP_8:
             dir.y = -1;
             break;
         
-        case SDLK_s:
+        case SDLK_KP_2:
             dir.y = 1;
             break;
             
-        case SDLK_d:
+        case SDLK_KP_6:
             dir.x = 1;
             break;
             
-        case SDLK_a:
+        case SDLK_KP_4:
             dir.x = -1;
             break;
         }
