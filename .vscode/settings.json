@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "sdl.h": "c",
-        "constants.h": "c"
+        "constants.h": "c",
+        "mainlayer.h": "c"
     }
 }

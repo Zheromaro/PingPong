@@ -71,9 +71,8 @@ void Do_process_input(){
     process_input(event);
 }
 void Do_update(){
-    // FixedUpdate 
     int time_to_wait = SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME);
-    if(time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME)
+    if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME)
         SDL_Delay(time_to_wait);
     
     float delta_time = (SDL_GetTicks() - last_frame_time) / 1000.0f;

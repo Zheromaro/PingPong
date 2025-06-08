@@ -7,13 +7,10 @@ find_package(SDL2_image CONFIG REQUIRED)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets" DESTINATION "${CMAKE_BINARY_DIR}")
 
 # variables
-set(SOURCES
-    src/main.c
-    src/loopFunc.c
-)
+aux_source_directory(src SRC_FILES)
 
 # executable
-add_executable(PingPong ${SOURCES})
+add_executable(PingPong ${SRC_FILES})
 
 # include && link
 target_link_libraries(PingPong
