@@ -1,10 +1,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <stdbool.h>
 #include "constants.h"
 #include "mainLayer.h"
 #include "healperFunc.h"
-
-SDL_Texture* LoadTexture(SDL_Renderer *renderer, const char *file);
 
 struct ball
 {
@@ -18,7 +17,7 @@ struct dir
     float x;
     float y;
 }dir;
-int speed = 1;
+int speed = 100;
 
 int followMouse = 0;
 SDL_Texture* texture = NULL;

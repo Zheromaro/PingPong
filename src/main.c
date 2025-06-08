@@ -10,7 +10,7 @@ int game_is_running = False;
 int last_frame_time = 0;
 
 int initialize_window(void){
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0){ 
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0){ 
         fprintf(stderr, "Error initializing SDL. \n");
         return False;
     }
