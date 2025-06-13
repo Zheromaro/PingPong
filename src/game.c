@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 #include "constants.h"
 #include "mainLayer.h"
@@ -21,7 +22,7 @@ int speed = 100;
 
 int followMouse = 0;
 SDL_Texture* texture = NULL;
-
+SDL_Rect textureRect = {0, 0, 0, 0};
 
 void game_setup() {
     ball.width = 50;
@@ -116,15 +117,14 @@ void game_update(float delta_time) {
     ball.y += dir.y * speed * delta_time;
 }
 void game_render(SDL_Renderer *renderer) {
-    SDL_Rect textureRect = {
-        ball.x, 
-        ball.y, 
-        ball.width, 
-        ball.height
-    };
+    textureRect.x = ball.x; 
+    textureRect.y = ball.y;
+    textureRect.w = ball.width;
+    textureRect.h = ball.height;
 
     if(texture == NULL)
-        texture = LoadTexture(renderer,"./assets/smart.png");
+        texture = LoadTexture(renderer,"./assets/img/smart.png");
+    
     
     SDL_RenderCopy(renderer, texture, NULL, &textureRect);
 

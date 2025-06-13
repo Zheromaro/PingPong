@@ -1,5 +1,5 @@
 #include <SDL2/SDL_image.h>
-#include "loopFunc.h"
+#include "mainLayer.h"
 #include "constants.h"
 
 struct ball

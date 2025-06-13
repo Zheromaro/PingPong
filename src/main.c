@@ -1,11 +1,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "constants.h"
 #include "mainLayer.h"
+#include "fmod.h"
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
+TTF_Font *font = NULL;
 int game_is_running = False;
+FMOD_SYSTEM *fmodSystem = NULL;
+
 
 int last_frame_time = 0;
 
@@ -41,12 +46,33 @@ int initialize_window(void){
         return False;
     }
 
+    if(TTF_Init() == -1){
+        printf("SDL_ttf could not be initialized! SDL_ttf Error : %s\n", TTF_GetError());
+        return False;
+    }
+    
+    font = TTF_OpenFont("assets/font/maxigo.ttf", FONTSIZE);
+    if (font == NULL){
+        printf("could not load Font! SDL_ttf Error : %s\n", TTF_GetError());
+    }
+    TTF_SetFontStyle(font, TTF_STYLE_UNDERLINE);
+
+
+    FMOD_System_Create(&fmodSystem, FMOD_VERSION);
+    FMOD_System_Init(fmodSystem, 2, FMOD_INIT_NORMAL, NULL);    
+
     return True;
 }
 void destroy_window(void){
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+    IMG_Quit();
+    TTF_CloseFont(font); // Must be before TTF_Quit();
+    TTF_Quit();
+
+    FMOD_System_Close(fmodSystem);
+    FMOD_System_Release(fmodSystem);
 }
 
 
@@ -85,12 +111,12 @@ void Do_render(){
     SDL_RenderClear(renderer);
     
     // here we start drawing our game 
-    render(renderer);
+    render(renderer, font);
 
     SDL_RenderPresent(renderer);
 }
 
-
+ 
 int main(){
     game_is_running = initialize_window();
 

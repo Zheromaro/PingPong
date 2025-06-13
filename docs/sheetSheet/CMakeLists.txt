@@ -35,3 +35,7 @@ if() #look in doc
 elseif() 
 else() 
 endif()
+
+# build with vcpkg : 
+#   cmake --preset=default
+#   cmake --build build
