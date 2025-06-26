@@ -15,6 +15,8 @@ FMOD_SYSTEM *fmodSystem = NULL;
 int last_frame_time = 0;
 
 int initialize_window(void){
+    #pragma region SDL
+     
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0){ 
         fprintf(stderr, "Error initializing SDL. \n");
         return False;
@@ -56,7 +58,8 @@ int initialize_window(void){
         printf("could not load Font! SDL_ttf Error : %s\n", TTF_GetError());
     }
     TTF_SetFontStyle(font, TTF_STYLE_UNDERLINE);
-
+    
+    #pragma endregion
 
     FMOD_System_Create(&fmodSystem, FMOD_VERSION);
     FMOD_System_Init(fmodSystem, 2, FMOD_INIT_NORMAL, NULL);    
@@ -77,7 +80,7 @@ void destroy_window(void){
 
 
 void Do_setup(){
-    setup();
+    setup(renderer, font, fmodSystem);
 }
 void Do_process_input(){
     SDL_Event event;
@@ -111,11 +114,13 @@ void Do_render(){
     SDL_RenderClear(renderer);
     
     // here we start drawing our game 
-    render(renderer, font);
+    render(renderer, font, fmodSystem);
 
     SDL_RenderPresent(renderer);
 }
-
+void Do_setdown(){
+    setdown(renderer, font, fmodSystem);
+}
  
 int main(){
     game_is_running = initialize_window();
@@ -129,6 +134,8 @@ int main(){
         Do_render();
     }
     
+    Do_setdown();
+
     destroy_window();
     return 0;
 }

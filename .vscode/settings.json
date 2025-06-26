@@ -7,6 +7,7 @@
         "sdl_ttf.h": "c",
         "healperfunc.h": "c",
         "game.h": "c",
-        "fmod.h": "c"
+        "fmod.h": "c",
+        "fmod_common.h": "c"
     }
 }

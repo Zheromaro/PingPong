@@ -6,32 +6,61 @@
 #include "mainLayer.h"
 #include "healperFunc.h"
 
-struct ball
+bool checkCollision(SDL_Rect a, SDL_Rect b) {
+    SDL_Rect result;
+    return SDL_IntersectRect(&a, &b, &result);
+}
+
+typedef struct Dir Dir;
+struct Dir
+{
+    float x;
+    float y;
+};
+Dir ballDir = {0,0};
+Dir playerLDir = {0,0};
+Dir playerRDir = {0,0};
+
+typedef struct Object Object;
+struct Object
 {
     float x;
     float y;
     float width;
     float height;
-} ball;
-struct dir
-{
-    float x;
-    float y;
-}dir;
-int speed = 100;
+};
+Object ball;
+Object playerL;
+Object playerR;
 
-int followMouse = 0;
+int ballSpeed = 100;
+int playerSpeed = 200;
+
 SDL_Texture* texture = NULL;
-SDL_Rect textureRect = {0, 0, 0, 0};
+SDL_Rect ballRect = {0, 0, 0, 0};
+SDL_Rect playerLRect = {0, 0, 0, 0};
+SDL_Rect playerRRect = {0, 0, 0, 0};
+
+SDL_Rect ObjectToRect(Object obj);
 
 void game_setup() {
-    ball.width = 50;
-    ball.height = 50;
+    ball.width = 30;
+    ball.height = 30;
     ball.x = WINDOW_WIDTH/2 - ball.width/2;
     ball.y = WINDOW_HEIGHT/2 - ball.height/2;
+    
+    playerL.width = 20;
+    playerL.height = 50;
+    playerL.x = 10;
+    playerL.y = WINDOW_HEIGHT/2 - playerL.height/2;
+    
+    playerR.width = 20;
+    playerR.height = 50;
+    playerR.x = WINDOW_WIDTH - playerR.width - 10 ;
+    playerR.y = WINDOW_HEIGHT/2 - playerR.height/2;
 
-    dir.x = 1;
-    dir.y = 1;
+    ballDir.x = 1;
+    ballDir.y = 1;
 }
 void game_input(SDL_Event event) {
     
@@ -40,92 +69,86 @@ void game_input(SDL_Event event) {
     case SDL_KEYDOWN:
         switch (event.key.keysym.sym)
         {
-        case SDLK_KP_8:
-            dir.y = -1;
+        case SDLK_w:
+            playerLDir.y = -1;
             break;
         
-        case SDLK_KP_2:
-            dir.y = 1;
+        case SDLK_s:
+            playerLDir.y = 1;
+            break;
+        
+        case SDLK_UP:
+            playerRDir.y = -1;
+            break;
+        
+        case SDLK_DOWN:
+            playerRDir.y = 1;
             break;
             
-        case SDLK_KP_6:
-            dir.x = 1;
-            break;
-            
-        case SDLK_KP_4:
-            dir.x = -1;
-            break;
         }
     break;
     case SDL_KEYUP:
         switch (event.key.keysym.sym)
         {
         case SDLK_w:
-            dir.y = 0;
+            playerLDir.y = 0;
             break;
         
         case SDLK_s:
-            dir.y = 0;
+            playerLDir.y = 0;
             break;
-            
-        case SDLK_d:
-            dir.x = 0;
+        
+        case SDLK_UP:
+            playerRDir.y = 0;
             break;
-            
-        case SDLK_a:
-            dir.x = 0;
+        
+        case SDLK_DOWN:
+            playerRDir.y = 0;
             break;
-        }
-    break;
-    case SDL_MOUSEBUTTONUP:
-        switch (event.button.button)
-        {
-        case SDL_BUTTON_RIGHT:
-            ball.x = event.button.x;
-            ball.y = event.button.y;
-        break;
-        case SDL_BUTTON_LEFT:
-            if(followMouse == 0) { 
-                followMouse = 1;
-            } else { 
-                followMouse = 0;
-            }
-        break;
-
-        }
-    break;
-    case SDL_MOUSEMOTION:
-        if(followMouse) {
-            ball.x = event.motion.x;
-            ball.y = event.motion.y;
         }
     break;
     }
 }
 void game_update(float delta_time) {
     if (ball.x > (WINDOW_WIDTH - ball.width))
-        dir.x = -1;
+        ballDir.x = -1;
     else if (ball.x < 0)
-        dir.x = 1;
+        ballDir.x = 1;
 
     if (ball.y > (WINDOW_HEIGHT - ball.height))
-        dir.y = -1;
+        ballDir.y = -1;
     else if (ball.y < 0)
-        dir.y = 1;
+        ballDir.y = 1;
 
-    ball.x += dir.x * speed * delta_time;
-    ball.y += dir.y * speed * delta_time;
+    ball.x += ballDir.x * ballSpeed * delta_time;
+    ball.y += ballDir.y * ballSpeed * delta_time;
+
+    playerL.x += playerLDir.x * playerSpeed * delta_time;
+    playerL.y += playerLDir.y * playerSpeed * delta_time;
+    playerR.x += playerRDir.x * playerSpeed * delta_time;
+    playerR.y += playerRDir.y * playerSpeed * delta_time;
 }
 void game_render(SDL_Renderer *renderer) {
-    textureRect.x = ball.x; 
-    textureRect.y = ball.y;
-    textureRect.w = ball.width;
-    textureRect.h = ball.height;
+    ballRect = ObjectToRect(ball);
+    playerRRect = ObjectToRect(playerR);
+    playerLRect = ObjectToRect(playerL);
 
     if(texture == NULL)
         texture = LoadTexture(renderer,"./assets/img/smart.png");
     
     
-    SDL_RenderCopy(renderer, texture, NULL, &textureRect);
+    SDL_RenderCopy(renderer, texture, NULL, &ballRect);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderFillRect(renderer, &playerLRect);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderFillRect(renderer, &playerRRect);
+}
 
+SDL_Rect ObjectToRect(Object obj){
+    SDL_Rect rect = {0, 0, 0, 0};
+    rect.x = obj.x; 
+    rect.y = obj.y;
+    rect.w = obj.width;
+    rect.h = obj.height;
+    return rect;
 }

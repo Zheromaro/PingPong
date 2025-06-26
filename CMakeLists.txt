@@ -5,8 +5,9 @@ project(PingPong VERSION 1.0)
 aux_source_directory(src SRC_FILES)
 set(FMOD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs/fmod)
 set(FMOD_INCLUDE ${FMOD_PATH}/include)
-file(GLOB FMOD_LIB "${FMOD_PATH}/lib/*.so")
-message(WARNING " : ${FMOD_LIB}")
+set(FMOD_LIB 
+    ${FMOD_PATH}/lib/libfmod.so
+)
 
 
 # add packages, lib, assets
@@ -26,8 +27,7 @@ $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 target_link_libraries(PingPong PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
 target_link_libraries(PingPong PRIVATE $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>)
-
 target_link_libraries(PingPong PUBLIC ${FMOD_LIB})
-target_include_directories(PingPong PUBLIC ${FMOD_INCLUDE})
 
+target_include_directories(PingPong PUBLIC ${FMOD_INCLUDE})
 target_include_directories(PingPong PUBLIC include/)
