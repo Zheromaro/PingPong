@@ -1,13 +1,15 @@
 #include <SDL2/SDL.h>
-#include "constants.h"
-#include "mainLayer.h"
 #include "audio.h"
 #include "image.h"
 #include "text.h"
+#include "appSettings.h"
+#include "constants.h"
+#include "game.h"
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
-int game_is_running = False;
+int gameIsRunning = False;
+int reloadGame = False;
 
 
 int last_frame_time = 0;
@@ -43,6 +45,7 @@ int initialize_window(void){
     if (imageInit(renderer) == False) return False;
     if (textInit() == False) return False;
     audioInit(); 
+    AppSettingInit(&gameIsRunning, &reloadGame);
 
     return True;
 }
@@ -57,7 +60,6 @@ void destroy_window(void){
     audioRelease();
 }
 
-
 void Do_setup(){
     setup();
 }
@@ -65,17 +67,6 @@ void Do_process_input(){
     SDL_Event event;
     SDL_PollEvent(&event);
 
-    switch (event.type)
-    {
-        case SDL_QUIT:
-            game_is_running = False;
-            break;
-        case SDL_KEYDOWN:
-            if(event.key.keysym.sym == SDLK_ESCAPE)
-                game_is_running = False;
-            break;
-    
-    }
     process_input(event);
 }
 void Do_update(){
@@ -102,19 +93,24 @@ void Do_setdown(){
 }
  
 int main(){
-    game_is_running = initialize_window();
+    gameIsRunning = initialize_window();
 
-    Do_setup();
-
-    while (game_is_running)
-    {
-        Do_process_input();
-        Do_update();
-        Do_render();
-        audioUpdate();
-    }
     
-    Do_setdown();
+    while (gameIsRunning)
+    {
+        Do_setup();
+        reloadGame = False;
+
+        while (!reloadGame && gameIsRunning)
+        {
+            Do_process_input();
+            Do_update();
+            Do_render();
+            audioUpdate();
+        }
+
+        Do_setdown();
+    }
 
     destroy_window();
     return 0;

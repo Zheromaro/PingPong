@@ -1,13 +1,11 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <stdbool.h>
-#include "constants.h"
-#include "mainLayer.h"
 #include "image.h"
 #include "audio.h"
 #include "text.h"
+#include "appSettings.h"
+#include "game.h"
+#include "constants.h"
 
-typedef struct Dir Dir;
 struct Dir
 {
     float x;
@@ -17,7 +15,6 @@ Dir ballDir = {0,0};
 Dir playerLDir = {0,0};
 Dir playerRDir = {0,0};
 
-typedef struct Object Object;
 struct Object
 {
     float x;
@@ -39,11 +36,9 @@ SDL_Rect playerLRect = {0, 0, 0, 0};
 SDL_Rect playerRRect = {0, 0, 0, 0};
 SDL_Rect counterRect = {60, 20, 50, 50};
 
-SDL_Rect ObjectToRect(Object obj);
-
 char soundFile[] = "assets/sound/music.mp3";
 
-void game_setup() {
+void setup() {
     audioPlaySound(soundFile);
     ballTexture = LoadTexture("./assets/img/smart.png");
     counterTexture = TextTextureBlended("0");
@@ -65,26 +60,33 @@ void game_setup() {
 
     ballDir.x = 1;
     ballDir.y = 1;
+
 }
-void game_input(SDL_Event event) {
-    
+void process_input(SDL_Event event) {  
     switch (event.type)
     {
+    case SDL_QUIT:
+        CloseGame();
+        break;
     case SDL_KEYDOWN:
         switch (event.key.keysym.sym)
         {
+        case SDLK_ESCAPE:
+            CloseGame();
+            break;
+        case SDLK_r:
+            ReloadGame();
+            break;
+
         case SDLK_w:
             playerLDir.y = -1;
             break;
-        
         case SDLK_s:
             playerLDir.y = 1;
             break;
-        
         case SDLK_UP:
             playerRDir.y = -1;
             break;
-        
         case SDLK_DOWN:
             playerRDir.y = 1;
             break;
@@ -112,8 +114,9 @@ void game_input(SDL_Event event) {
         }
     break;
     }
+
 }
-void game_update(float delta_time) {
+void update(float delta_time) {
     if (ball.x > (WINDOW_WIDTH - ball.width))
         ballDir.x = -1;
     else if (ball.x < 0)
@@ -132,7 +135,7 @@ void game_update(float delta_time) {
     playerR.x += playerRDir.x * playerSpeed * delta_time;
     playerR.y += playerRDir.y * playerSpeed * delta_time;
 }
-void game_render(SDL_Renderer *renderer) {
+void render(SDL_Renderer *renderer) {
     ballRect = ObjectToRect(ball);
     playerRRect = ObjectToRect(playerR);
     playerLRect = ObjectToRect(playerL);
@@ -145,6 +148,10 @@ void game_render(SDL_Renderer *renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderFillRect(renderer, &playerRRect);
 }
+void setdown() {
+    
+}
+
 
 SDL_Rect ObjectToRect(Object obj){
     SDL_Rect rect = {0, 0, 0, 0};
@@ -153,4 +160,8 @@ SDL_Rect ObjectToRect(Object obj){
     rect.w = obj.width;
     rect.h = obj.height;
     return rect;
+}
+SDL_bool checkCollision(SDL_Rect a, SDL_Rect b) {
+    SDL_Rect result;
+    return SDL_IntersectRect(&a, &b, &result);
 }
