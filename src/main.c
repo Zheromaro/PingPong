@@ -1,22 +1,19 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 #include "constants.h"
 #include "mainLayer.h"
-#include "fmod.h"
+#include "audio.h"
+#include "image.h"
+#include "text.h"
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
-TTF_Font *font = NULL;
 int game_is_running = False;
-FMOD_SYSTEM *fmodSystem = NULL;
 
 
 int last_frame_time = 0;
 
 int initialize_window(void){
-    #pragma region SDL
-     
+    
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0){ 
         fprintf(stderr, "Error initializing SDL. \n");
         return False;
@@ -42,27 +39,10 @@ int initialize_window(void){
         return False;
     }
     
-    int imgFlags = IMG_INIT_PNG;
-    if(!(IMG_Init(imgFlags) & imgFlags)){
-        printf("SDL_image could not be initialized! SDL_image Error: %s\n", IMG_GetError());
-        return False;
-    }
-
-    if(TTF_Init() == -1){
-        printf("SDL_ttf could not be initialized! SDL_ttf Error : %s\n", TTF_GetError());
-        return False;
-    }
-    
-    font = TTF_OpenFont("assets/font/maxigo.ttf", FONTSIZE);
-    if (font == NULL){
-        printf("could not load Font! SDL_ttf Error : %s\n", TTF_GetError());
-    }
-    TTF_SetFontStyle(font, TTF_STYLE_UNDERLINE);
-    
-    #pragma endregion
-
-    FMOD_System_Create(&fmodSystem, FMOD_VERSION);
-    FMOD_System_Init(fmodSystem, 2, FMOD_INIT_NORMAL, NULL);    
+    // other libraries
+    if (imageInit(renderer) == False) return False;
+    if (textInit() == False) return False;
+    audioInit(); 
 
     return True;
 }
@@ -70,17 +50,16 @@ void destroy_window(void){
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    IMG_Quit();
-    TTF_CloseFont(font); // Must be before TTF_Quit();
-    TTF_Quit();
 
-    FMOD_System_Close(fmodSystem);
-    FMOD_System_Release(fmodSystem);
+    // other libraries
+    imageRelease();
+    textRelease();
+    audioRelease();
 }
 
 
 void Do_setup(){
-    setup(renderer, font, fmodSystem);
+    setup();
 }
 void Do_process_input(){
     SDL_Event event;
@@ -114,12 +93,12 @@ void Do_render(){
     SDL_RenderClear(renderer);
     
     // here we start drawing our game 
-    render(renderer, font, fmodSystem);
+    render(renderer);
 
     SDL_RenderPresent(renderer);
 }
 void Do_setdown(){
-    setdown(renderer, font, fmodSystem);
+    setdown();
 }
  
 int main(){
@@ -132,6 +111,7 @@ int main(){
         Do_process_input();
         Do_update();
         Do_render();
+        audioUpdate();
     }
     
     Do_setdown();

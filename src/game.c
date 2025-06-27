@@ -1,15 +1,11 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 #include "constants.h"
 #include "mainLayer.h"
-#include "healperFunc.h"
-
-bool checkCollision(SDL_Rect a, SDL_Rect b) {
-    SDL_Rect result;
-    return SDL_IntersectRect(&a, &b, &result);
-}
+#include "image.h"
+#include "audio.h"
+#include "text.h"
 
 typedef struct Dir Dir;
 struct Dir
@@ -36,14 +32,22 @@ Object playerR;
 int ballSpeed = 100;
 int playerSpeed = 200;
 
-SDL_Texture* texture = NULL;
+SDL_Texture* ballTexture = NULL;
+SDL_Texture* counterTexture = NULL;
 SDL_Rect ballRect = {0, 0, 0, 0};
 SDL_Rect playerLRect = {0, 0, 0, 0};
 SDL_Rect playerRRect = {0, 0, 0, 0};
+SDL_Rect counterRect = {60, 20, 50, 50};
 
 SDL_Rect ObjectToRect(Object obj);
 
+char soundFile[] = "assets/sound/music.mp3";
+
 void game_setup() {
+    audioPlaySound(soundFile);
+    ballTexture = LoadTexture("./assets/img/smart.png");
+    counterTexture = TextTextureBlended("0");
+
     ball.width = 30;
     ball.height = 30;
     ball.x = WINDOW_WIDTH/2 - ball.width/2;
@@ -132,12 +136,10 @@ void game_render(SDL_Renderer *renderer) {
     ballRect = ObjectToRect(ball);
     playerRRect = ObjectToRect(playerR);
     playerLRect = ObjectToRect(playerL);
-
-    if(texture == NULL)
-        texture = LoadTexture(renderer,"./assets/img/smart.png");
     
     
-    SDL_RenderCopy(renderer, texture, NULL, &ballRect);
+    SDL_RenderCopy(renderer, ballTexture, NULL, &ballRect);
+    SDL_RenderCopy(renderer, counterTexture, NULL, &counterRect);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderFillRect(renderer, &playerLRect);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

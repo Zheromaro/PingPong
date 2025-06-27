@@ -8,6 +8,11 @@
         "healperfunc.h": "c",
         "game.h": "c",
         "fmod.h": "c",
-        "fmod_common.h": "c"
+        "fmod_common.h": "c",
+        "cstdlib": "c",
+        "audio.h": "c",
+        "image.h": "c",
+        "text.h": "c",
+        "stdbool.h": "c"
     }
 }
