@@ -7,8 +7,10 @@
 #include "constants.h"
 
 FMOD_SYSTEM *fmodSystem = NULL;
-FMOD_CHANNEL *channel = NULL;
+FMOD_CHANNEL *musicChannel = NULL;
+FMOD_CHANNEL *sfxChannel = NULL;
 FMOD_SOUND *music = NULL;
+FMOD_SOUND *sfx = NULL;
 FMOD_BOOL state = 0;
 FMOD_RESULT result = 1;
 
@@ -28,11 +30,11 @@ int audioInit() {
 void audioUpdate(){
     FMOD_System_Update(fmodSystem);
 }
-
 void audioRelease(){
     
-    audioPauseSound();
-    FMOD_Sound_Release(music);
+    audioPauseMusic();
+    if (music == NULL) FMOD_Sound_Release(music);
+    if (sfx == NULL) FMOD_Sound_Release(sfx);
 
     FMOD_System_Close(fmodSystem);
     FMOD_System_Release(fmodSystem);
@@ -40,21 +42,22 @@ void audioRelease(){
 
 // for High level code
 
-void audioPlaySound(char soundFile[]){
-    audioPauseSound();
+void audioPlayMusic(char musicFile[]){
     FMOD_Sound_Release(music);
-    FMOD_System_CreateSound(fmodSystem, soundFile, FMOD_2D | FMOD_CREATESTREAM | FMOD_DEFAULT | FMOD_LOOP_NORMAL, NULL, &music);
-    FMOD_System_PlaySound(fmodSystem, music, NULL, 0, &channel);
+    FMOD_System_CreateSound(fmodSystem, musicFile, FMOD_2D | FMOD_CREATESTREAM | FMOD_DEFAULT | FMOD_LOOP_NORMAL, NULL, &music);
+    FMOD_System_PlaySound(fmodSystem, music, NULL, 0, &musicChannel);
 }
-
-void audioPauseSound(){
-    FMOD_Channel_GetPaused(channel, &state);
+void audioPauseMusic(){
+    FMOD_Channel_GetPaused(musicChannel, &state);
     if (state != 1) // if the music is not paused
-        FMOD_Channel_SetPaused(channel, 1); // We pause it
+        FMOD_Channel_SetPaused(musicChannel, 1); // We pause it
 }
-
-void audioUnpauseSound(){
-    FMOD_Channel_GetPaused(channel, &state);
+void audioUnpauseMusic(){
+    FMOD_Channel_GetPaused(musicChannel, &state);
     if (state == 1) // if the music is paused
-        FMOD_Channel_SetPaused(channel, 0); // We play it
+        FMOD_Channel_SetPaused(musicChannel, 0); // We play it
+}
+void audioPlaySFX(char sfxFile[]){
+    FMOD_System_CreateSound(fmodSystem, sfxFile, FMOD_DEFAULT | FMOD_2D | FMOD_CREATESAMPLE, NULL, &sfx);
+    FMOD_System_PlaySound(fmodSystem, sfx, NULL, 0, &sfxChannel);
 }

@@ -36,15 +36,12 @@ int gameEnded = 0;
 
 char battleMusicFile[] = "assets/sound/Battle-Music.mp3";
 char sadMusicFile[] = "assets/sound/Sadness-And-Sorrow.mp3";
+char sfxFile[] = "assets/sound/jump.wav";
 char ballImageFile[] = "assets/img/smart.png";
 char menuBackgroundImageFile[] = "assets/img/menuBackground.png";
 
 void Setup() {
-    gameEnded = 0;
-    counterL = 0;
-    counterR = 0;
-
-    audioPlaySound(battleMusicFile);
+    audioPlayMusic(battleMusicFile);
     menuBackgroundTexture = LoadTexture(menuBackgroundImageFile);
     ballTexture = LoadTexture(ballImageFile);
     counterLTexture = NumTextureBlended(counterL); 
@@ -63,9 +60,17 @@ void Setup() {
     counterRRect.y = 35;
 }
 void LoopStart() {
+    if(gameEnded == 1){
+        gameEnded = 0;
+        counterL = 0;
+        counterR = 0;
+        counterLTexture = NumTextureBlended(counterL); 
+        counterRTexture = NumTextureBlended(counterR);
+        audioPlayMusic(battleMusicFile);
+    }
     if(counterL == maxPoint || counterR == maxPoint) {
         gameEnded = 1;
-        audioPlaySound(sadMusicFile);
+        audioPlayMusic(sadMusicFile);
         if(counterL == 3)
             losingPlayerTextTexture = TextTextureBlended("Player 2");
         else if (counterR == 3)
@@ -105,7 +110,6 @@ void ProcessInput(SDL_Event event) {
             break;
         case SDLK_SPACE:
             if(gameEnded) {
-                Setup();
                 ReloadGame();
             }
             break;
@@ -167,10 +171,13 @@ void Update(float delta_time) {
     else if (ball.y < 0)
         ballDir.y = 1;
     
-    if (CheckCollision(ballRect, playerRRect))
+    if (CheckCollision(ballRect, playerRRect)) {
+        audioPlaySFX(sfxFile);
         ballDir.x = -1;
-    else if (CheckCollision(ballRect, playerLRect))
+    } else if (CheckCollision(ballRect, playerLRect)) {
+        audioPlaySFX(sfxFile);
         ballDir.x = 1;
+    }
 
     ball.x += ballDir.x * ballSpeed * delta_time;
     ball.y += ballDir.y * ballSpeed * delta_time;

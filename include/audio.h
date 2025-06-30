@@ -2,6 +2,7 @@
 int audioInit();
 void audioUpdate();
 void audioRelease();
-void audioPlaySound(char soundFile[]);
-void audioPauseSound();
-void audioUnpauseSound();
+void audioPlayMusic(char soundFile[]);
+void audioPauseMusic();
+void audioUnpauseMusic();
+void audioPlaySFX(char sfxFile[]);
