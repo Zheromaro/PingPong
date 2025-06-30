@@ -5,9 +5,10 @@
 #include "constants.h"
 
 
-TTF_Font *font = NULL;
 SDL_Color blackColor = {0, 0, 0};
 SDL_Color whiteColor = {255, 255, 255};
+TTF_Font *font = NULL;
+char fontFile[] = "assets/font/rainyhearts.ttf";
 
 int textInit() {
     if(TTF_Init() == -1){
@@ -15,7 +16,7 @@ int textInit() {
         return False;
     }
     
-    font = TTF_OpenFont("assets/font/maxigo.ttf", FONTSIZE);
+    font = TTF_OpenFont(fontFile, FONTSIZE);
     if (font == NULL){
         printf("could not load Font! SDL_ttf Error : %s\n", TTF_GetError());
     }
@@ -62,6 +63,24 @@ SDL_Texture* TextTextureShaded(const char *text){
 // High quality but slow
 SDL_Texture* TextTextureBlended(const char *text){
     SDL_Texture* newTexture = NULL;
+    SDL_Surface* loadedSurface = TTF_RenderText_Blended(font, text, whiteColor);
+
+    if(loadedSurface == NULL){
+        printf("Unable to load the surface! SDL_ttf Error: %s\n", TTF_GetError());
+    } else {
+        newTexture = SurfaceToTexture(loadedSurface);
+        SDL_FreeSurface(loadedSurface);
+    }
+
+    return newTexture;
+}
+
+// High quality but slow
+SDL_Texture* NumTextureBlended(const int num){
+    SDL_Texture* newTexture = NULL;
+    
+    char text[10];
+    sprintf(text, "%d", num);
     SDL_Surface* loadedSurface = TTF_RenderText_Blended(font, text, whiteColor);
 
     if(loadedSurface == NULL){

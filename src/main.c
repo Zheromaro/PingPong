@@ -61,13 +61,16 @@ void destroy_window(void){
 }
 
 void Do_setup(){
-    setup();
+    Setup();
+}
+void Do_loopstart(){
+    LoopStart();
 }
 void Do_process_input(){
     SDL_Event event;
     SDL_PollEvent(&event);
 
-    process_input(event);
+    ProcessInput(event);
 }
 void Do_update(){
     int time_to_wait = SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME);
@@ -77,28 +80,26 @@ void Do_update(){
     float delta_time = (SDL_GetTicks() - last_frame_time) / 1000.0f;
 
     last_frame_time = SDL_GetTicks();
-    update(delta_time);
+    Update(delta_time);
 }
 void Do_render(){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     
     // here we start drawing our game 
-    render(renderer);
+    Render(renderer);
 
     SDL_RenderPresent(renderer);
 }
-void Do_setdown(){
-    setdown();
-}
+
  
 int main(){
     gameIsRunning = initialize_window();
+    Do_setup();
 
-    
     while (gameIsRunning)
     {
-        Do_setup();
+        Do_loopstart();
         reloadGame = False;
 
         while (!reloadGame && gameIsRunning)
@@ -109,7 +110,6 @@ int main(){
             audioUpdate();
         }
 
-        Do_setdown();
     }
 
     destroy_window();

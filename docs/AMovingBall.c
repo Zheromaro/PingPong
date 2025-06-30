@@ -18,7 +18,7 @@ struct dir
 
 int followMouse = 0;
 
-void setup() {
+void Setup() {
     ball.width = 15;
     ball.height = 15;
     ball.x = WINDOW_HEIGHT/2 - ball.height/2;
@@ -27,7 +27,7 @@ void setup() {
     dir.x = 0;
     dir.y = 0;
 }
-void process_input(SDL_Event event) {
+void ProcessInput(SDL_Event event) {
     
     switch (event.type)
     {
@@ -96,11 +96,11 @@ void process_input(SDL_Event event) {
     break;
     }
 }
-void update(float delta_time) {
+void Update(float delta_time) {
     ball.x += dir.x;
     ball.y += dir.y;
 }
-void render(SDL_Renderer *renderer) {
+void Render(SDL_Renderer *renderer) {
     SDL_Rect ball_rect = {
         ball.x, 
         ball.y, 

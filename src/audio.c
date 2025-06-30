@@ -43,7 +43,7 @@ void audioRelease(){
 void audioPlaySound(char soundFile[]){
     audioPauseSound();
     FMOD_Sound_Release(music);
-    FMOD_System_CreateSound(fmodSystem, soundFile, FMOD_2D | FMOD_CREATESTREAM, NULL, &music);
+    FMOD_System_CreateSound(fmodSystem, soundFile, FMOD_2D | FMOD_CREATESTREAM | FMOD_DEFAULT | FMOD_LOOP_NORMAL, NULL, &music);
     FMOD_System_PlaySound(fmodSystem, music, NULL, 0, &channel);
 }
 

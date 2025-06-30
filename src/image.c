@@ -7,8 +7,8 @@ SDL_Renderer *imageRenderer = NULL;
 
 int imageInit(SDL_Renderer *renderer) {
     imageRenderer = renderer;
-
-    int imgFlags = IMG_INIT_PNG;
+    
+    int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
     if(!(IMG_Init(imgFlags) & imgFlags)){
         printf("SDL_image could not be initialized! SDL_image Error: %s\n", IMG_GetError());
         return False;
